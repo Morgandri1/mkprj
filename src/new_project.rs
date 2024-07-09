@@ -162,5 +162,8 @@ pub fn handler(command: String, mut args: Skip<std::env::Args>, config: Config) 
             println!("Invalid number of arguments");
         },
     }
-    println!("Initialized project")
+    subprocess::Exec::cmd(config.editor)
+        .arg("./".to_owned() + project_name.as_str())
+        .join()
+        .expect("Failed to open editor");
 }
