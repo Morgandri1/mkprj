@@ -8,14 +8,37 @@ pub struct Config {
     pub editor: String,
     /// Command used to run node in case npm is not the PM of choice. this could be bun, yarn, deno, etc.
     /// so long as it uses `{cmd} init -y` to initialize a new project.
-    pub node_command: String
+    pub node_command: String,
+    #[cfg(feature = "check_update")]
+    pub auto_update_settings: CheckUpdates,
+    
+}
+#[cfg(feature = "check_update")]
+#[derive(Debug, Serialize, Deserialize)]
+struct CheckUpdates {
+    check_for_updates: bool,
+    auto_update: bool,
+    beta: bool,
 }
 
 impl Default for Config {
+    #[cfg(not(feature = "check_update"))]
     fn default() -> Self {
         Config {
             editor: "vim".to_string(),
             node_command: "npm".to_string()
+        }
+    }
+    #[cfg(feature = "check_update")]
+    fn default() -> Self {
+        Config {
+            editor: "vim".to_string(),
+            node_command: "npm".to_string(),
+            auto_update_settings: CheckUpdates {
+                check_for_updates: true,
+                auto_update: false,
+                beta: false,
+            }
         }
     }
 }

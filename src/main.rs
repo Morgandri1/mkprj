@@ -28,6 +28,12 @@ fn main() {
                 let key = arg.next().unwrap();
                 let value = arg.next().unwrap().to_string();
                 match key {
+                    #[cfg(feature = "check_update")]
+                    "--check_for_updates" => config.auto_update_settings.check_for_updates = value.parse().expect("Invalid value"),
+                    #[cfg(feature = "check_update")]
+                    "--auto_update" => config.auto_update_settings.auto_update = value.parse().expect("Invalid value"),
+                    #[cfg(feature = "check_update")]
+                    "--beta" => config.auto_update_settings.beta = value.parse().expect("Invalid value"),
                     "--editor_command" => config.editor = value,
                     "--node_command" => config.node_command = value,
                     _ => println!("Invalid config flag: '{}'", key),
