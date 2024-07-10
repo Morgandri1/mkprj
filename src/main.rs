@@ -9,13 +9,12 @@ mod new_project;
 #[cfg(feature = "check_update")]
 mod check_update;
 
-fn main() {
-    if cfg!(feature = "check_update") {
-        tokio::runtime::Runtime::new()
-            .unwrap()
-            .block_on(check_update::check_update())
-            .expect("Failed to check for updates. Please try again later.");
-    }
+fn main() { 
+    #[cfg(feature = "check_update")]
+    tokio::runtime::Runtime::new()
+        .unwrap()
+        .block_on(check_update::check_update())
+        .expect("Failed to check for updates. Please try again later.");
     
     let command = args().nth(1).expect("No args given!");
     let args = args().skip(2);
