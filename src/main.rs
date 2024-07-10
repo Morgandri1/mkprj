@@ -27,6 +27,8 @@ fn main() {
             if should_write {
                 config.write_config().expect("Failed to write config");
                 println!("Updated config!")
+            } else {
+                println!("Editor Command: {}\nNode Command: {}", config.editor, config.node_command)
             }
         },
         // Help command with all language flags from new_project.rs switch statement
