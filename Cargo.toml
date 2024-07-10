@@ -1,7 +1,11 @@
 [package]
 name = "mkprj"
-version = "1.0.3"
+version = "1.1.0"
 edition = "2021"
+
+[features]
+default = ["check_update"]
+check_update = ["reqwest", "tokio", "toml"]
 
 [dependencies]
 anyhow = "1.0.86"
@@ -9,3 +13,6 @@ dirs = "5.0.1"
 serde = { version = "1.0", features = ["derive"] }
 serde_json = "1.0.120"
 subprocess = "0.2.9"
+reqwest = { version="0.11.6", optional = true }
+tokio = { version="1.10.0", optional = true, features = ["full"] }
+toml = { version="0.8.14", optional = true }
