@@ -4,7 +4,6 @@ version = "1.1.0"
 edition = "2021"
 
 [features]
-default = ["check_update"]
 check_update = ["reqwest", "tokio", "toml"]
 
 [dependencies]
