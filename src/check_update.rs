@@ -33,17 +33,9 @@ pub async fn check_update() -> Result<(), reqwest::Error> {
     }
     else if manifest.package.version != version && !config.auto_update_settings.auto_update {
         let update = match config.auto_update_settings.beta {
-            false => subprocess::Exec::cmd("cargo")
-                        .arg("install")
-                        .arg("--git")
-                        .arg("https://github.com/Morgandri1/mkprj")
+            false => subprocess::Exec::cmd(STABLE_INSTALL_COMMAND)
                         .join(),
-            true => subprocess::Exec::cmd("cargo")
-                        .arg("install")
-                        .arg("--git")
-                        .arg("--branch")
-                        .arg("nightly")
-                        .arg("https://github.com/Morgandri1/mkprj")
+            true => subprocess::Exec::cmd(NIGHTLY_INSTALL_COMMAND)
                         .join()
         };
         match update {
