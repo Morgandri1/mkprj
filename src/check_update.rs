@@ -32,19 +32,23 @@ pub async fn check_update() -> Result<(), reqwest::Error> {
         }
     }
     else if manifest.package.version != version && !config.auto_update_settings.auto_update {
-        match config.auto_update_settings.beta {
-            true => Subprocess::new("cargo")
+        let update = match config.auto_update_settings.beta {
+            false => subprocess::Exec::cmd("cargo")
                         .arg("install")
                         .arg("--git")
                         .arg("https://github.com/Morgandri1/mkprj")
-                        .spawn(),
-            false => Subprocess::new("cargo")
+                        .join(),
+            true => subprocess::Exec::cmd("cargo")
                         .arg("install")
                         .arg("--git")
                         .arg("--branch")
                         .arg("nightly")
                         .arg("https://github.com/Morgandri1/mkprj")
-                        .spawn()
+                        .join()
+        };
+        match update {
+            Ok(_) => println!("mkprj has been updated to version {}", manifest.package.version),
+            Err(_) => println!("Failed to automatically update mkprj")
         }
     }
     Ok(())

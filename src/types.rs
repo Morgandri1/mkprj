@@ -15,10 +15,10 @@ pub struct Config {
 }
 #[cfg(feature = "check_update")]
 #[derive(Debug, Serialize, Deserialize)]
-struct CheckUpdates {
-    check_for_updates: bool,
-    auto_update: bool,
-    beta: bool,
+pub struct CheckUpdates {
+    pub check_for_updates: bool,
+    pub auto_update: bool,
+    pub beta: bool,
 }
 
 impl Default for Config {
