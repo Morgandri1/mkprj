@@ -2,7 +2,7 @@ use std::{iter::Skip, process::Command};
 
 use crate::types::Config;
 
-pub fn handler(command: String, mut args: Skip<std::env::Args>, config: Config) {
+pub fn handler(command: String, mut args: Skip<std::env::Args>, config: &Config) {
     let project_name = command;
     std::fs::create_dir(&project_name).expect("Failed to create project directory");
     let mut cmd = if cfg!(target_os = "windows") {
@@ -162,7 +162,7 @@ pub fn handler(command: String, mut args: Skip<std::env::Args>, config: Config) 
             println!("Invalid number of arguments");
         },
     }
-    subprocess::Exec::cmd(config.editor)
+    subprocess::Exec::cmd(&config.editor)
         .arg("./".to_owned() + project_name.as_str())
         .join()
         .expect("Failed to open editor");

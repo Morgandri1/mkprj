@@ -13,6 +13,7 @@ pub struct Config {
     pub auto_update_settings: CheckUpdates,
     
 }
+
 #[cfg(feature = "check_update")]
 #[derive(Debug, Serialize, Deserialize)]
 pub struct CheckUpdates {
@@ -55,6 +56,47 @@ impl Config {
         // Parse the config file
         let config: Config = serde_json::from_str(&config)?;
         Ok(config)
+    }
+    
+    /// Sometimes, the config file may be missing some fields. This function will patch the config file
+    pub fn patch_config() -> Result<()> {
+        let mut default = Config::default();
+        // Read the config file
+        let home = home_dir()
+            .expect("Failed to get home directory")
+            .to_str()
+            .unwrap()
+            .to_owned();
+        let config = read_to_string(home + "/.mkprj/config.json")?;
+        // Parse the config file
+        let config: serde_json::Value = serde_json::from_str(&config)?;
+        // Check if the config file has the required fields
+        // If not, add the missing fields
+        default.editor = match config["editor"] {
+            serde_json::Value::Null => default.editor,
+            _ => config["editor"].as_str().unwrap().to_owned(),
+        };
+        default.node_command = match config["node_command"] {
+            serde_json::Value::Null => default.node_command,
+            _ => config["node_command"].as_str().unwrap().to_owned(),
+        };
+        #[cfg(feature = "check_update")]
+        {
+            default.auto_update_settings.check_for_updates = match config["auto_update_settings"]["check_for_updates"] {
+                serde_json::Value::Null => default.auto_update_settings.check_for_updates,
+                _ => config["auto_update_settings"]["check_for_updates"].as_bool().unwrap(),
+            };
+            default.auto_update_settings.auto_update = match config["auto_update_settings"]["auto_update"] {
+                serde_json::Value::Null => default.auto_update_settings.auto_update,
+                _ => config["auto_update_settings"]["auto_update"].as_bool().unwrap(),
+            };
+            default.auto_update_settings.beta = match config["auto_update_settings"]["beta"] {
+                serde_json::Value::Null => default.auto_update_settings.beta,
+                _ => config["auto_update_settings"]["beta"].as_bool().unwrap(),
+            };
+        }
+        default.write_config()?;
+        Ok(())
     }
     
     pub fn write_config(self: Self) -> Result<()> {

@@ -16,8 +16,7 @@ struct Package {
 const NIGHTLY_INSTALL_COMMAND: &str = "cargo install --git --branch nightly https://github.com/Morgandri1/mkprj";
 const STABLE_INSTALL_COMMAND: &str = "cargo install --git https://github.com/Morgandri1/mkprj";
 
-pub async fn check_update() -> Result<(), reqwest::Error> {
-    let config = Config::read_config().expect("failed to read config");
+pub async fn check_update(config: &Config) -> Result<(), reqwest::Error> {
     if !config.auto_update_settings.check_for_updates {
         return Ok(());
     }
