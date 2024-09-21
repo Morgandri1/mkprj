@@ -1,5 +1,5 @@
 # mkprj
-mkprj is a simple cli utility to make project creation more seamless. It allows you to create a project with most language's templates and then open it in your favorite editor.
+mkprj is a simple cli utility to make project creation more seamless. It allows you to create a project with most language's templates and then open it in your favorite editor. The primary purpose of this tool is to unify template bootstrapping to one command.
 
 ### This project seems pointless
 It is, to be honest. But, I find the commands ran just to start a new project are enough of a point of friction (for me) to warrant a tool like this. I hope you find it useful too.
