@@ -35,8 +35,8 @@ pub fn handler(command: String, mut args: Skip<std::env::Args>, config: &Config)
                 },
                 "--py" => {
                     cmd.current_dir(project_name.as_str());
-                    let pipenv_init = cmd.arg(format!("pipenv install")).output();
-                    println!("{:#?}", pipenv_init.expect("Failed to run pipenv install").stdout);
+                    let pipenv_init = cmd.arg(format!("python3 -m venv .")).output();
+                    println!("{:#?}", pipenv_init.expect("Failed to init venv").stdout);
                 },
                 "--rust" => {
                     std::fs::remove_dir(project_name.as_str()).expect("Directory not empty or not found");

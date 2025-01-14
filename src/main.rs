@@ -25,7 +25,7 @@ fn main() {
     tokio::runtime::Runtime::new()
         .unwrap()
         .block_on(check_update::check_update(&config))
-        .expect("Failed to check for updates. Please try again later.");
+        .map_err("Failed to check for updates. Please try again later.");
     
     match command.as_str() {
         "config" | "-c" | "--config" => {
